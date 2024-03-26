@@ -1,0 +1,32 @@
+name: shortcode
+
+services:
+  web:
+    image: node:18-alpine
+    depends_on:
+      - database
+    ports:
+      - 3000:3000
+    volumes:
+      - ./dist:/var/www/dist
+      - ./public:/var/www/public
+      - ./package.json:/var/www/package.json
+    working_dir: /var/www
+    environment:
+      - MONGO_URL=mongodb://database:27017/shortcode
+    command: yarn docker:start
+    develop:
+      watch:
+        - path: ./dist
+          target: /app/dist
+          action: sync
+        - path: ./public
+          target: /app/public
+          action: sync
+
+  database:
+    image: mongo:6
+    ports:
+      - 8000:27017
+    environment:
+      - MONGO_INITDB_DATABASE=shortcode

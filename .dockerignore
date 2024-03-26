@@ -1,0 +1,6 @@
+.env.example
+yarn.lock
+*.rest
+tsconfig.json
+src/
+node_modules/
